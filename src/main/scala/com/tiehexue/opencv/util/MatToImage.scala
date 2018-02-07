@@ -23,7 +23,7 @@ trait MatWrapper {
     }
 
     def show() = {
-      ImageZoomer(image).show()
+      ImageShower(image).show()
     }
   }
 }

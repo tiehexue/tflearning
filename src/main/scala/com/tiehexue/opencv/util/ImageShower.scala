@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage
 import java.awt.{BorderLayout, Image}
 import javax.swing.{JFrame, JScrollPane, _}
 
-case class ImageZoomer(img: BufferedImage) {
+case class ImageShower(img: BufferedImage) {
 
   var zoom = 1.0
 
@@ -48,6 +48,7 @@ case class ImageZoomer(img: BufferedImage) {
 
     resizeImage(1.0 / math.max(w, h))
     frame.setVisible(true)
+
   }
 
 }
