@@ -1,14 +1,10 @@
 package com.tiehexue
 
-import org.tensorflow.Graph
-import org.tensorflow.Session
-import org.tensorflow.Tensor
-import org.tensorflow.TensorFlow
+import com.tiehexue.opencv.util.MatWrapper
+import org.bytedeco.javacpp.opencv_imgcodecs
+import org.tensorflow.{Graph, Session, Tensor, TensorFlow}
 
-import org.bytedeco.javacpp.opencv_core.CV_8UC1
-import org.bytedeco.javacpp.opencv_core.Mat
-
-object Hello extends App {
+object Hello extends App with MatWrapper {
 
   def tensor = {
     val g = new Graph
@@ -31,9 +27,7 @@ object Hello extends App {
     g.close()
   }
 
-  val mat = Mat.eye(3, 3, CV_8UC1)
-  System.out.println("mat = " + mat.toString)
-
-  Console.println("Hello World: " + (args mkString ", "))
+  val mat = opencv_imgcodecs.imread("/Users/wy/Desktop/test.jpg")
+  mat.show
 
 }
