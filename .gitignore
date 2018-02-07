@@ -1,4 +1,5 @@
 .idea
 target/
-src/main/resources/org/tensorflow/native
+src/main/resources/org/tensorflow/native/darwin-x86_64
+
 

@@ -1,0 +1,4 @@
+Put tensorflow JNI file here.
+
+darwin-x86_64/libtensorflow_jni.dylib
+darwin-x86_64/libtensorflow_framework.so
