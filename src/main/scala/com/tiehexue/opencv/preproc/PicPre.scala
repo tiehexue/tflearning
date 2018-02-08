@@ -1,6 +1,7 @@
-package com.tiehexue
+package com.tiehexue.opencv.preproc
 
 import com.tiehexue.opencv.util.MatWrapper
+import com.tiehexue.util.Tesseract
 import org.bytedeco.javacpp.opencv_core._
 import org.bytedeco.javacpp.opencv_imgcodecs._
 import org.bytedeco.javacpp.opencv_imgproc._
@@ -32,8 +33,8 @@ object PicPre extends App with MatWrapper {
   dilate(horizontal, horizontal, hStructure)
   horizontal.show()
 
-  val verticalSize = vertical.rows / scale
-  val vStructure = getStructuringElement(MORPH_RECT, new Size(1, verticalSize))
+  val verticalSize = vertical.rows / scale / 2
+  val vStructure = getStructuringElement(MORPH_RECT, new Size(1, verticalSize), new Point(-1, -1))
   erode(vertical, vertical, vStructure)
   dilate(vertical, vertical, vStructure)
   vertical.show()
@@ -47,14 +48,14 @@ object PicPre extends App with MatWrapper {
 
   val contours = new MatVector()
   val hierarchy = new Mat()
-  findContours(mask, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE, new Point(0, 0))
+  findContours(mask, contours, RETR_LIST, CHAIN_APPROX_NONE, new Point(0, 0))
 
   val contours_poly = new MatVector(contours.size)
   (0 until contours.size.toInt).foreach { i =>
     val c = contours.get(i)
     val area = contourArea(c)
 
-    if (area > 100) {
+    if (area > 10) {
       val poly = new Mat()
       approxPolyDP(c, poly, 3, true)
       val boundRect = boundingRect(poly)
@@ -65,8 +66,17 @@ object PicPre extends App with MatWrapper {
       findContours(roi, joints_contours, RETR_CCOMP, CHAIN_APPROX_SIMPLE)
 
       // if the number is not more than 5 then most likely it not a table
-      if (joints_contours.size > 4) {
-        imwrite("/Users/wy/Desktop/table-" + i + ".jpg", new Mat(src, boundRect))
+      val fileName = s"./output/table_${i}_${boundRect.x}-${boundRect.y}-${boundRect.width}-${boundRect.height}.jpg"
+      if (joints_contours.size == 4) {
+        imwrite(fileName, new Mat(src, boundRect))
+
+        try {
+          val result = Tesseract.getText(fileName)
+          System.out.println(s"${fileName} -> ${result}")
+        } catch {
+          case e: Throwable =>
+            System.err.println(e.getMessage)
+        }
       }
     }
   }
