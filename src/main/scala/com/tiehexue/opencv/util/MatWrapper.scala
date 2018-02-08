@@ -1,9 +1,9 @@
 package com.tiehexue.opencv.util
 
-import org.bytedeco.javacpp.opencv_core.Mat
+import org.bytedeco.javacpp.opencv_core.{Mat, add, not}
 
 trait MatWrapper {
-  implicit class MatToShow(mat: Mat) {
+  implicit class Mat4Easy(mat: Mat) {
 
     import java.awt.image.{BufferedImage, DataBufferByte}
 
@@ -24,6 +24,14 @@ trait MatWrapper {
 
     def show() = {
       ImageShower(image).show()
+    }
+
+    def +(other: Mat) = {
+      add(mat, other).asMat
+    }
+
+    def unary_~ = {
+      not(mat).asMat
     }
   }
 }

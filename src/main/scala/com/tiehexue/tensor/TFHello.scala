@@ -1,11 +1,9 @@
-package com.tiehexue
+package com.tiehexue.tensor
 
 import com.tiehexue.opencv.util.MatWrapper
-import org.bytedeco.javacpp.{opencv_imgcodecs, opencv_imgproc}
 import org.tensorflow.{Graph, Session, Tensor, TensorFlow}
-import org.bytedeco.javacpp.opencv_imgproc.cvtColor
 
-object Hello extends App with MatWrapper {
+object TFHello extends App with MatWrapper {
 
   def tensor = {
     val g = new Graph
@@ -28,9 +26,5 @@ object Hello extends App with MatWrapper {
     g.close()
   }
 
-  val mat = opencv_imgcodecs.imread("/Users/wy/Desktop/test.jpg")
-  mat.show()
-
-  cvtColor(mat, mat, opencv_imgproc.CV_BGR2GRAY)
-  mat.show()
+  tensor
 }
